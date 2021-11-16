@@ -6,21 +6,25 @@ class Parking
 {
 public:
     Parking();
-    Parking(int,int,QString,QString);
-    int getid();
-    int getdate();
+    Parking(int,QString,QString,int,int);
+    int getmatricule();
     QString getnom();
     QString getprenom();
-    void setid(int);
-    void setdate(int);
+    int getperiode();
+    int getprix();
+    void setmatricule(int);
     void setnom(QString);
     void setprenom(QString);
+    void setperiode(int);
+    void setprix(int);
     bool ajouter();
     QSqlQueryModel* afficher();
+    bool modifier();
     bool supprimer(int);
+    QSqlQueryModel* trier();
+    QSqlQueryModel* rechercher_matricule(int matricule);
 private :
-    int id;
-    int date;
+    int matricule,periode,prix;
     QString nom,prenom;
 
 };
