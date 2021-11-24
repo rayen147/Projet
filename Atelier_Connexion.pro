@@ -5,7 +5,9 @@
 #-------------------------------------------------
 
 QT       += core gui sql
-
+QT += printsupport multimedia
+QT+=widgets multimedia
+QT += network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Atelier_Connexion
@@ -28,12 +30,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     connection.cpp \
-    parking.cpp
+    parking.cpp \
+    qcustomplot.cpp \
+    qrcode.cpp
 
 HEADERS += \
         mainwindow.h \
     connection.h \
-    parking.h
+    parking.h \
+    qcustomplot.h \
+    qrcode.h
 
 FORMS += \
         mainwindow.ui

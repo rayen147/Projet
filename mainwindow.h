@@ -27,6 +27,18 @@ private slots:
 
     void on_recherche_matricule_clicked();
 
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_5_clicked();
+
+    void on_recherche_nom_clicked();
+
+    void on_recherche_prenom_clicked();
+
+    void on_Ajouter_currentChanged(int index);
+
+    void on_pb_qr_clicked();
+
 private:
     Ui::MainWindow *ui;
     Parking P;

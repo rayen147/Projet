@@ -90,6 +90,36 @@ QSqlQuery * q = new  QSqlQuery ();
                  model->setHeaderData(3, Qt::Horizontal, QObject::tr("prix"));
                  return model;
 }
+
+QSqlQueryModel* Parking::trier1()
+{
+   QSqlQuery * q = new  QSqlQuery ();
+   QSqlQueryModel * model = new  QSqlQueryModel ();
+   q->prepare("SELECT * FROM VOITURE order by nom ASC");
+   q->exec();
+   model->setQuery(*q);
+   model->setHeaderData(0, Qt::Horizontal, QObject::tr("matricule"));
+   model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+   model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+   model->setHeaderData(3, Qt::Horizontal, QObject::tr("periode"));
+   model->setHeaderData(3, Qt::Horizontal, QObject::tr("prix"));
+   return model;
+}
+
+QSqlQueryModel* Parking::trier2()
+{
+   QSqlQuery * q = new  QSqlQuery ();
+   QSqlQueryModel * model = new  QSqlQueryModel ();
+   q->prepare("SELECT * FROM VOITURE order by prenom ASC");
+   q->exec();
+   model->setQuery(*q);
+   model->setHeaderData(0, Qt::Horizontal, QObject::tr("matricule"));
+   model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+   model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+   model->setHeaderData(3, Qt::Horizontal, QObject::tr("periode"));
+   model->setHeaderData(3, Qt::Horizontal, QObject::tr("prix"));
+   return model;
+}
 QSqlQueryModel* Parking::rechercher_matricule(int matricule)
 {
 
@@ -110,4 +140,61 @@ QSqlQueryModel* Parking::rechercher_matricule(int matricule)
 
         return model;
 
+}
+
+QSqlQueryModel* Parking::rechercher_nom(QString nom)
+{
+
+    QSqlQuery * q = new  QSqlQuery ();
+
+                     QSqlQueryModel * model = new  QSqlQueryModel ();
+                     q->prepare("select * from VOITURE where nom=:nom");
+                     q->bindValue(":nom",nom );
+                     q->exec();
+
+         model->setQuery(*q);
+         model->setHeaderData(0, Qt::Horizontal, QObject::tr("matricule"));
+         model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+         model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+         model->setHeaderData(3, Qt::Horizontal, QObject::tr("periode"));
+         model->setHeaderData(4, Qt::Horizontal, QObject::tr("prix"));
+
+
+        return model;
+
+}
+
+QSqlQueryModel* Parking::rechercher_prenom(QString prenom)
+{
+
+    QSqlQuery * q = new  QSqlQuery ();
+
+                     QSqlQueryModel * model = new  QSqlQueryModel ();
+                     q->prepare("select * from VOITURE where prenom=:prenom");
+                     q->bindValue(":prenom",prenom );
+                     q->exec();
+
+         model->setQuery(*q);
+         model->setHeaderData(0, Qt::Horizontal, QObject::tr("matricule"));
+         model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+         model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+         model->setHeaderData(3, Qt::Horizontal, QObject::tr("periode"));
+         model->setHeaderData(4, Qt::Horizontal, QObject::tr("prix"));
+
+
+        return model;
+
+}
+void Parking::statistique(QVector<double>* ticks,QVector<QString> *labels)
+{
+    QSqlQuery q;
+    int i=0;
+    q.exec("select MATRICULE from VOITURE");
+    while (q.next())
+    {
+        QString identifiant = q.value(0).toString();///********///
+        i++;
+        *ticks<<i;
+        *labels <<identifiant;
+    }
 }
