@@ -31,6 +31,7 @@ SOURCES += \
         mainwindow.cpp \
     connection.cpp \
     parking.cpp \
+    popup.cpp \
     qcustomplot.cpp \
     qrcode.cpp
 
@@ -38,6 +39,7 @@ HEADERS += \
         mainwindow.h \
     connection.h \
     parking.h \
+    popup.h \
     qcustomplot.h \
     qrcode.h
 

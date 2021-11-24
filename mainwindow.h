@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 #include"parking.h"
 #include <QMainWindow>
-
+#include "popup.h"
 namespace Ui {
 class MainWindow;
 }
@@ -39,9 +39,12 @@ private slots:
 
     void on_pb_qr_clicked();
 
+    void on_pb_notifier_clicked();
+
 private:
     Ui::MainWindow *ui;
     Parking P;
+    PopUp *popUp;
 };
 
 #endif // MAINWINDOW_H

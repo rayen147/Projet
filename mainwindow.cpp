@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->le_matricule->setValidator(new QIntValidator(0, 9999999, this));
   ui->le_periode->setValidator(new QIntValidator(0, 9999, this));
     ui->tab_parking->setModel(P.afficher());
+     popUp = new PopUp();
 }
 
 MainWindow::~MainWindow()
@@ -305,4 +306,11 @@ void MainWindow::on_pb_qr_clicked()
                        i++;
                        ui->progressBar->setValue(i);
                    }
+}
+
+void MainWindow::on_pb_notifier_clicked()
+{
+    popUp->setPopupText(ui->textEdit_notifier->toPlainText());
+
+    popUp->show();
 }
