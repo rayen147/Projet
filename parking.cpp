@@ -48,8 +48,8 @@ QSqlQueryModel* Parking::afficher()
                  model->setHeaderData(0, Qt::Horizontal, QObject::tr("matricule"));
                  model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom"));
                  model->setHeaderData(2, Qt::Horizontal, QObject::tr("Prenom"));
-                 model->setHeaderData(2, Qt::Horizontal, QObject::tr("Periode"));
-                 model->setHeaderData(2, Qt::Horizontal, QObject::tr("Prix"));
+                 model->setHeaderData(3, Qt::Horizontal, QObject::tr("Periode"));
+                 model->setHeaderData(4, Qt::Horizontal, QObject::tr("Prix"));
 
                  return model;
 }
