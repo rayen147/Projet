@@ -4,7 +4,10 @@
 #include <QDebug>
 #include <QIntValidator>
 #include <QMap>
-
+#include "personne.h"
+#include "personnel.h"
+#include "parking.h"
+#include "abonnement.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -797,4 +800,596 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     }
 
 
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    int id=ui->id_per->text().toInt();
+     QString nom=ui->nom_per->text();
+      QString prenom=ui->prenom_per->text();
+       QString email=ui->email_per->text();
+Personne p(id,email,nom,prenom);
+bool test=p.ajouter();
+QMessageBox msg;
+if(test){
+    msg.setText("ajout reussi");
+}
+else{
+    msg.setText("ajout non reussi");
+}
+msg.exec();
+}
+
+void MainWindow::on_tabWidget_3_currentChanged(int index)
+{
+   if (index ==2){
+       Personne p;
+       ui->tableView_4->setModel(p.afficher());
+   }
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    int id=ui->id_mod_per->text().toInt();
+     QString nom=ui->nom_mod_per->text();
+      QString prenom=ui->prenom_mod_per->text();
+       QString email=ui->email_mod_per->text();
+       QMessageBox msg;
+Personne p(id,email,nom,prenom);
+QSqlQueryModel* modal = p.afficherRecherche(id);
+if(!modal->index(0,0).data().toString().length()){
+    msg.setText("id existe pas ");
+}
+else{
+bool test=p.modifier(id);
+
+if(test){
+    msg.setText("modification reussi");
+}
+else{
+    msg.setText("modification non reussi");
+}
+}
+msg.exec();
+}
+
+void MainWindow::on_pushButton_13_clicked()
+{
+    int id=ui->id_supp_per->text().toInt();
+
+       QMessageBox msg;
+Personne p;
+QSqlQueryModel* modal = p.afficherRecherche(id);
+if(!modal->index(0,0).data().toString().length()){
+    msg.setText("id existe pas ");
+}
+else{
+bool test=p.supprimer(id);
+
+if(test){
+    msg.setText("supprimer reussi");
+}
+else{
+    msg.setText("supprimer non reussi");
+}
+}
+msg.exec();
+}
+
+void MainWindow::on_pushButton_29_clicked()
+{
+ Personne p;
+
+    ui->tableView_4->setModel(p.afficher());
+}
+
+void MainWindow::on_pushButton_28_clicked()
+{
+    Personne p;
+   int id=ui->id_rech_per->text().toInt();
+       ui->tableView_4->setModel(p.afficherRecherche(id));
+}
+
+void MainWindow::on_pushButton_30_clicked()
+{
+    Personne p;
+
+       ui->tableView_4->setModel(p.afficherTri(0));
+}
+
+void MainWindow::on_pushButton_14_clicked()
+{
+    int mat=ui->mat_par->text().toInt();
+     QString nom=ui->nom_par->text();
+      QString prenom=ui->prenom_par->text();
+       int prix=ui->prix_par->text().toInt();
+       int periode=ui->periode_par->text().toInt();
+Parking p(mat,nom,prenom,periode,prix);
+bool test=p.ajouter();
+QMessageBox msg;
+if(test){
+    msg.setText("ajout reussi");
+}
+else{
+    msg.setText("ajout non reussi");
+}
+msg.exec();
+}
+
+void MainWindow::on_pushButton_17_clicked()
+{
+    int mat=ui->mat_par_mod->text().toInt();
+     QString nom=ui->nom_par_mod->text();
+      QString prenom=ui->prenom_par_mod->text();
+       int prix=ui->prix_par_mod->text().toInt();
+       int periode=ui->periode_par_mod->text().toInt();
+Parking p(mat,nom,prenom,periode,prix);
+QMessageBox msg;
+QSqlQueryModel* modal = p.rechercher_matricule(mat);
+if(!modal->index(0,0).data().toString().length()){
+    msg.setText("matricule existe pas ");
+}
+else{
+bool test=p.modifier();
+
+if(test){
+    msg.setText("modification reussi");
+}
+else{
+    msg.setText("modification non reussi");
+}
+}
+msg.exec();
+}
+
+void MainWindow::on_pushButton_18_clicked()
+{
+    int mat=ui->mat_par_supp->text().toInt();
+
+       QMessageBox msg;
+Parking p;
+QSqlQueryModel* modal = p.rechercher_matricule(mat);
+if(!modal->index(0,0).data().toString().length()){
+    msg.setText("matricule existe pas ");
+}
+else{
+bool test=p.supprimer(mat);
+
+if(test){
+    msg.setText("supprimer reussi");
+}
+else{
+    msg.setText("supprimer non reussi");
+}
+}
+msg.exec();
+}
+
+void MainWindow::on_pushButton_31_clicked()
+{
+    Parking p;
+   int mat=ui->mat_par_rech->text().toInt();
+       ui->tableView_5->setModel(p.rechercher_matricule(mat));
+}
+
+void MainWindow::on_pushButton_40_clicked()
+{
+    Parking p;
+       ui->tableView_5->setModel(p.afficher());
+}
+
+void MainWindow::on_pushButton_32_clicked()
+{
+    Parking p;
+       ui->tableView_5->setModel(p.trier());
+}
+
+void MainWindow::on_tabWidget_4_currentChanged(int index)
+{
+    if(index == 2){
+        Parking p;
+        ui->tableView_5->setModel(p.afficher());
+    }
+}
+
+void MainWindow::on_pushButton_22_clicked()
+{QString nom=ui->nom_ser->text();
+    QString produit=ui->produit_ser->text();
+    QString etat_financiere=ui->etat_ser->text();
+    QString raison_social=ui->social_ser->text();
+    QString etablissement=ui->eta_ser->text();
+    QString description=ui->textEdit->toPlainText();
+    QSqlQuery qry;
+
+  qry.prepare("INSERT INTO servi (nom,produit,etat_financiere,raison_social,etablissement,description)"
+              "VALUES(:nom,:produit,:etat_financiere,:raison_social,:etablissement,:description)");
+    qry.bindValue(":nom",nom);
+    qry.bindValue(":produit",produit);
+   qry.bindValue(":etat_financiere",etat_financiere);
+   qry.bindValue(":raison_social",raison_social);
+   qry.bindValue(":etablissement",etablissement);
+   qry.bindValue(":description",description);
+   if(qry.exec())
+   {
+       QMessageBox::information(this,"edit","service added successfully");
+   }
+   else
+   {
+       QMessageBox::warning(this,"error","error");
+   }
+
+
+
+
+
+
+}
+
+
+
+void MainWindow::on_pushButton_24_clicked()
+{
+    QString nom=ui->nom_ser_supp->text();
+    QSqlQuery qry;
+    qry.prepare("Delete from servi where nom='"+nom+"'");
+            if(qry.exec())
+            {
+              QMessageBox::critical(this,"delete","deleted");
+            }
+            else
+            {
+                QMessageBox::critical(this,"error","not deleted");
+            }
+}
+
+
+void MainWindow::on_pushButton_42_clicked()
+{
+    QSqlQueryModel* req=new QSqlQueryModel();;
+    req->setQuery("select nom,produit,etat_financiere,raison_social,etablissement,description from servi");
+
+
+    ui->tableView_7->setModel(req);
+}
+
+
+
+void MainWindow::on_pushButton_23_clicked()
+{QString nom=ui->nom_ser_mod->text();
+    QString produit=ui->produit_ser_mod->text();
+    QString etat_financiere=ui->etat_ser_mod->text();
+    QString raison_social=ui->raison_ser_mod->text();
+    QString etablissement=ui->etabl_ser_mod->text();
+    QString description=ui->textEdit_2->toPlainText();
+    QSqlQuery qry;
+    qry.prepare("update servi set  etat_financiere='"+etat_financiere+"',raison_social='"+raison_social+"',description='"+description+"',produit='"+produit+"',etablissement='"+etablissement+"'where nom='"+nom+"'  " );
+    if(qry.exec())
+    {
+
+        QMessageBox::critical(this,"edit","updated");
+    }
+    else
+    {
+        QMessageBox::critical(this,"error"," not updated");
+
+    }
+
+}
+
+void MainWindow::on_pushButton_35_clicked()
+{
+    QString nom=ui->nom_ser_rech->text();
+    QSqlQuery qry;
+    qry.prepare("select * from servi where nom='"+nom+"'");
+    if(qry.exec())
+    {QSqlQueryModel * model=new QSqlQueryModel();
+
+
+        model->setQuery(qry);
+        ui->tableView_7->setModel(model);
+
+    }
+    else
+    {
+        QMessageBox::warning(this,"error","no information");
+    }
+}
+
+void MainWindow::on_pushButton_38_clicked()
+{
+    QSqlQuery qry;
+    qry.prepare("select * from servi ORDER BY nom");
+    if(qry.exec())
+
+
+    {
+        QSqlQueryModel * model=new QSqlQueryModel();
+
+
+                model->setQuery(qry);
+                ui->tableView_7->setModel(model);
+
+    }
+    else {
+        QMessageBox::warning(this,"error","no information");
+    }
+}
+
+void MainWindow::on_tabWidget_6_currentChanged(int index)
+{
+    if(index == 2 ){
+        on_pushButton_42_clicked();
+    }
+}
+
+void MainWindow::on_pushButton_19_clicked()
+{
+    int cin=ui->cin_per->text().toInt();
+           QString nom=ui->nom_per_2->text();
+           QString prenom=ui->prenom_per_2->text();
+           QString adresse=ui->adresse_per_2->text();
+           QDate date_n=ui->dateEdit->date();
+
+           personnel p(cin,nom,prenom,adresse,date_n);
+
+           bool test=p.ajouter();
+           if(test)
+           {
+               ui->tableView_3->setModel(p.afficher());
+                 QMessageBox::information(nullptr, QObject::tr("OK") ,
+                                          QObject::tr("Ajout effectué "
+                                                      "Clicked Cancel to exit.") , QMessageBox::Cancel);
+           }
+           else
+                 QMessageBox::critical(nullptr, QObject::tr("not OK") ,
+                                          QObject::tr("Ajout non effectué "
+                                                      "Clicked Cancel to exit.") , QMessageBox::Cancel);
+}
+
+void MainWindow::on_pushButton_20_clicked()
+{
+
+        int cin=ui->cin_per_7->text().toInt();
+           QString nom=ui->nom_per_7->text();
+           QString prenom=ui->prenom_per_7->text();
+           QString adresse=ui->adresse_per_10->text();
+           QDate date_n=ui->dateEdit_3->date();
+ personnel p(cin,nom,prenom,adresse,date_n);
+       bool test= p.modifier(cin);
+        QMessageBox msg;
+       if(test)
+       {
+                       msg.setText("modifie avec succés");
+
+                       }
+                       else
+                       {
+                       msg.setText("Echec au niveau de la modif ");
+                       }
+                       msg.exec();
+
+
+}
+
+void MainWindow::on_pushButton_21_clicked()
+{
+    int cin=ui->cin_supp_per_3->text().toInt();
+    personnel p;
+          bool test=p.supprimer(cin);
+          if(test)
+          {
+
+
+                QMessageBox::information(nullptr, QObject::tr("OK") ,
+                                         QObject::tr("Supression effectué "
+                                                     "Clicked Cancel to exit.") , QMessageBox::Cancel);
+          }
+          else
+                QMessageBox::critical(nullptr, QObject::tr("not OK") ,
+                                         QObject::tr("Suppression non effectué "
+                                                     "Clicked Cancel to exit.") , QMessageBox::Cancel);
+}
+
+void MainWindow::on_pushButton_33_clicked()
+{
+    personnel p;
+    QString nom = ui->nom_rech_per_8->text();
+    ui->tableView_6->setModel(p.rechercheNom(nom));
+}
+
+void MainWindow::on_pushButton_41_clicked()
+{
+    personnel p;
+
+    ui->tableView_6->setModel(p.afficher());
+}
+
+void MainWindow::on_pushButton_37_clicked()
+{
+    personnel p;
+
+    ui->tableView_6->setModel(p.triernom());
+}
+
+void MainWindow::on_pushButton_25_clicked()
+{
+            int Id=ui->id_per_5->text().toInt();
+               QString nom=ui->nom_per_5->text() ;
+               QString prenom=ui->prenom_per_5->text() ;
+               int nombre_des_jeux=ui->nb_per_5->text().toInt();
+               int duree=ui->duree_per_15->text().toInt();
+               int prix=ui->prix_per_9->text().toInt();
+               int etat=ui->etat_per_16->text().toInt();
+               QDate date =ui->dateEdit_2->date();
+               QString strDate = date.toString("dd-MM-yyyy");
+
+               //affectation des donnees
+               Abonnement A(Id,nom,prenom,nombre_des_jeux,prix,duree,etat,strDate);
+
+                       bool test=A.ajouter();
+                   if(test)
+                               {
+
+                                  QMessageBox msgBox ;
+                                  QMessageBox::information(this,"information","abbonement ajouté");
+                                  }
+                                   else
+                                   {
+                                       QMessageBox msgBox ;
+                                       msgBox.setText("abbonement non ajouté ");
+                                   }
+
+
+}
+
+void MainWindow::on_pushButton_26_clicked()
+{
+    int Id=ui->id_per_9->text().toInt();
+       QString nom=ui->nom_per_9->text() ;
+       QString prenom=ui->prenom_per_10->text() ;
+       int nombre_des_jeux=ui->nb_per_18->text().toInt();
+       int duree=ui->duree_per_19->text().toInt();
+       int prix=ui->prix_per_11->text().toInt();
+       int etat=ui->etat_per_20->text().toInt();
+       QDate date =ui->dateEdit_4->date();
+       QString strDate = date.toString("dd-MM-yyyy");
+
+       //affectation des donnees
+       Abonnement A(Id,nom,prenom,nombre_des_jeux,prix,duree,etat,strDate);
+
+               bool test=A.modifier(Id);
+           if(test)
+                       {
+
+                          QMessageBox msgBox ;
+                          QMessageBox::information(this,"information","abbonement modifié");
+                          }
+                           else
+                           {
+                               QMessageBox msgBox ;
+                               msgBox.setText("abbonement non modifié ");
+                           }
+}
+
+void MainWindow::on_pushButton_27_clicked()
+{
+   int Id=ui->id_supp_per_5->text().toInt();
+
+   Abonnement A;
+
+           bool test=A.supprimer(Id);
+       if(test)
+                   {
+
+                      QMessageBox msgBox ;
+                      QMessageBox::information(this,"information","abbonement supprime");
+                      }
+                       else
+                       {
+                           QMessageBox msgBox ;
+                           msgBox.setText("abbonement non supprimé ");
+                       }
+}
+
+void MainWindow::on_pushButton_36_clicked()
+{
+      QString Id=ui->id_supp_per_11->text();
+       Abonnement A;
+       ui->tableView_8->setModel(A.rechercher(Id));
+
+}
+
+void MainWindow::on_pushButton_43_clicked()
+{
+    Abonnement A;
+    ui->tableView_8->setModel(A.afficher());
+}
+
+void MainWindow::on_pushButton_39_clicked()
+{
+    Abonnement A;
+    ui->tableView_8->setModel(A.trier());
+}
+
+void MainWindow::on_tabWidget_7_currentChanged(int index)
+{
+    if (index ==2){
+       on_pushButton_43_clicked();
+    }
+}
+
+void MainWindow::on_tabWidget_5_currentChanged(int index)
+{
+    if (index ==2){
+       on_pushButton_41_clicked();
+    }
+}
+
+void MainWindow::on_tabWidget_2_currentChanged(int index)
+{
+  QMessageBox msg;
+    if(!validationClient && !validationAdmin){
+      ui->tabWidget_2->setCurrentIndex(0);
+        msg.setText("authentifiez-vous");
+        msg.exec();
+  }
+  else if(validationClient){
+      if(!index || index==4){
+         ui->tabWidget_2->setCurrentIndex(1);
+      }
+      if(index==4){
+        msg.setText("vous etes pas admin");
+         msg.exec();
+      }
+  }
+  else{
+      if(!index){
+         ui->tabWidget_2->setCurrentIndex(1);
+    }
+  }
+}
+
+void MainWindow::on_pushButton_34_clicked()
+{
+    QString cle1=ui->cle1->text();
+    QMessageBox msg;
+    if(cle1 == "smart parking perso2022"){
+        validationClient = true;
+        ui->tabWidget_2->setCurrentIndex(1);
+        msg.setText("authentification client reussi");
+    }
+    else{
+        msg.setText("authentification client non reussi");
+    }
+    msg.exec();
+}
+
+void MainWindow::on_pushButton_44_clicked()
+{
+    QString cle1=ui->cle->text();
+    QMessageBox msg;
+    if(cle1 == "smart parking admin 000 in 2022"){
+        validationAdmin = true;
+        ui->tabWidget_2->setCurrentIndex(1);
+        msg.setText("authentification admin reussi");
+    }
+    else{
+        msg.setText("authentification admin non reussi");
+    }
+    msg.exec();
+}
+
+void MainWindow::on_pushButton_45_clicked()
+{
+    QMessageBox msg;
+    if(validationAdmin || validationClient){
+        validationAdmin =false;
+        validationClient = false;
+         msg.setText("utilistateur deconnecte");
+         ui->tabWidget_2->setCurrentIndex(0);
+    }
+    else{
+         msg.setText("utilistateur est pas connecte");
+    }
+    msg.exec();
 }

@@ -25,13 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    abonnement.cpp \
         main.cpp \
         mainwindow.cpp \
-    connection.cpp
+    connection.cpp \
+    parking.cpp \
+    personne.cpp \
+    personnel.cpp \
+    service.cpp
 
 HEADERS += \
+    abonnement.h \
         mainwindow.h \
-    connection.h
+    connection.h \
+    parking.h \
+    personne.h \
+    personnel.h \
+    service.h
 
 FORMS += \
         mainwindow.ui
